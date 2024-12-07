@@ -50,9 +50,9 @@ SET default_table_access_method = heap;
 CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
     name character varying(60) NOT NULL,
-    description character varying(60),
+    description text NOT NULL,
     age_in_millions_of_years integer,
-    galaxy_type character varying(30),
+    galaxy_type text,
     number_of_stars integer,
     mass_of_galaxy numeric(5,2)
 );
@@ -89,11 +89,11 @@ ALTER SEQUENCE public.galaxy_galaxy_id_seq OWNED BY public.galaxy.galaxy_id;
 CREATE TABLE public.moon (
     moon_id integer NOT NULL,
     name character varying(60) NOT NULL,
-    description character varying(60),
+    description text NOT NULL,
     is_spherical boolean,
     age_in_millions_of_years integer,
     distance_from_earth numeric(4,1),
-    planet_id integer NOT NULL
+    planet_id integer
 );
 
 
@@ -115,10 +115,25 @@ CREATE SEQUENCE public.moon_moon_id_seq
 ALTER TABLE public.moon_moon_id_seq OWNER TO freecodecamp;
 
 --
--- Name: moon_moon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+-- Name: moon_moon_id_seq1; Type: SEQUENCE; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.moon_moon_id_seq OWNED BY public.moon.moon_id;
+CREATE SEQUENCE public.moon_moon_id_seq1
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.moon_moon_id_seq1 OWNER TO freecodecamp;
+
+--
+-- Name: moon_moon_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+--
+
+ALTER SEQUENCE public.moon_moon_id_seq1 OWNED BY public.moon.moon_id;
 
 
 --
@@ -128,13 +143,13 @@ ALTER SEQUENCE public.moon_moon_id_seq OWNED BY public.moon.moon_id;
 CREATE TABLE public.planet (
     planet_id integer NOT NULL,
     name character varying(60) NOT NULL,
-    description character varying(60),
+    description text NOT NULL,
     has_life boolean,
     is_spherical boolean,
     age_in_millions_of_years integer,
     distance_from_earth numeric(4,1),
-    planet_type character varying(30),
-    star_id integer NOT NULL
+    planet_type text,
+    star_id integer
 );
 
 
@@ -168,8 +183,8 @@ ALTER SEQUENCE public.planet_planet_id_seq OWNED BY public.planet.planet_id;
 
 CREATE TABLE public.satellite (
     satellite_id integer NOT NULL,
-    name character varying(30),
-    purpose character varying(60),
+    name character varying(60) NOT NULL,
+    purpose character varying(60) NOT NULL,
     is_operational boolean,
     is_visible boolean
 );
@@ -184,7 +199,7 @@ ALTER TABLE public.satellite OWNER TO freecodecamp;
 CREATE TABLE public.star (
     star_id integer NOT NULL,
     name character varying(60) NOT NULL,
-    description character varying(60),
+    description character varying(60) NOT NULL,
     is_spherical boolean,
     age_in_millions_of_years integer,
     distance_from_earth numeric(4,1),
@@ -227,7 +242,7 @@ ALTER TABLE ONLY public.galaxy ALTER COLUMN galaxy_id SET DEFAULT nextval('publi
 -- Name: moon moon_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.moon ALTER COLUMN moon_id SET DEFAULT nextval('public.moon_moon_id_seq'::regclass);
+ALTER TABLE ONLY public.moon ALTER COLUMN moon_id SET DEFAULT nextval('public.moon_moon_id_seq1'::regclass);
 
 
 --
@@ -260,26 +275,26 @@ INSERT INTO public.galaxy VALUES (6, 'Whirlpool Galaxy', 'M51', 11, 'Spherical',
 -- Data for Name: moon; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.moon VALUES (56, 'Titan', 'Largest moon of Saturn', true, 4500, 1.2, 1);
-INSERT INTO public.moon VALUES (57, 'Europa', 'Moon of Jupiter with ice crust', true, 4000, 1.1, 2);
-INSERT INTO public.moon VALUES (58, 'Io', 'Volcanically active moon of Jupiter', true, 4500, 0.9, 3);
-INSERT INTO public.moon VALUES (59, 'Ganymede', 'Largest moon in the solar system', true, 4600, 1.3, 4);
-INSERT INTO public.moon VALUES (60, 'Callisto', 'Moon of Jupiter with many craters', true, 4600, 2.2, 5);
-INSERT INTO public.moon VALUES (61, 'Luna', 'Earth’s only natural satellite', true, 4500, 0.4, 6);
-INSERT INTO public.moon VALUES (62, 'Phobos', 'Inner moon of Mars', true, 4500, 0.1, 7);
-INSERT INTO public.moon VALUES (63, 'Deimos', 'Outer moon of Mars', true, 4500, 0.2, 8);
-INSERT INTO public.moon VALUES (64, 'Titania', 'Largest moon of Uranus', true, 4500, 2.8, 9);
-INSERT INTO public.moon VALUES (65, 'Oberon', 'Second largest moon of Uranus', true, 4500, 3.0, 10);
-INSERT INTO public.moon VALUES (66, 'Enceladus', 'Moon of Saturn with water geysers', true, 4000, 1.0, 11);
-INSERT INTO public.moon VALUES (67, 'Rhea', 'Moon of Saturn', true, 4500, 2.0, 12);
-INSERT INTO public.moon VALUES (68, 'Mimas', 'Moon of Saturn with a large impact crater', true, 4500, 1.4, 13);
-INSERT INTO public.moon VALUES (69, 'Triton', 'Moon of Neptune with retrograde orbit', true, 4500, 4.3, 14);
-INSERT INTO public.moon VALUES (70, 'Charon', 'Largest moon of Pluto', true, 4600, 5.9, 1);
-INSERT INTO public.moon VALUES (71, 'Miranda', 'Moon of Uranus with varied terrain', true, 4500, 3.1, 2);
-INSERT INTO public.moon VALUES (72, 'Ganymede-II', 'Another large moon of Jupiter', true, 4600, 1.3, 3);
-INSERT INTO public.moon VALUES (73, 'Iapetus', 'Moon of Saturn with a unique appearance', true, 4500, 3.0, 4);
-INSERT INTO public.moon VALUES (74, 'Triton-II', 'A similar moon to Neptune’s Triton', true, 4500, 4.5, 5);
-INSERT INTO public.moon VALUES (75, 'Umbriel', 'Dark moon of Uranus', true, 4500, 2.7, 6);
+INSERT INTO public.moon VALUES (41, 'Titan', 'Largest moon of Saturn', true, 4500, 1.2, 1);
+INSERT INTO public.moon VALUES (42, 'Europa', 'Moon of Jupiter with ice crust', true, 4000, 1.1, 2);
+INSERT INTO public.moon VALUES (43, 'Io', 'Volcanically active moon of Jupiter', true, 4500, 0.9, 3);
+INSERT INTO public.moon VALUES (44, 'Ganymede', 'Largest moon in the solar system', true, 4600, 1.3, 4);
+INSERT INTO public.moon VALUES (45, 'Callisto', 'Moon of Jupiter with many craters', true, 4600, 2.2, 5);
+INSERT INTO public.moon VALUES (46, 'Luna', 'Earth’s only natural satellite', true, 4500, 0.4, 6);
+INSERT INTO public.moon VALUES (47, 'Phobos', 'Inner moon of Mars', true, 4500, 0.1, 7);
+INSERT INTO public.moon VALUES (48, 'Deimos', 'Outer moon of Mars', true, 4500, 0.2, 8);
+INSERT INTO public.moon VALUES (49, 'Titania', 'Largest moon of Uranus', true, 4500, 2.8, 9);
+INSERT INTO public.moon VALUES (50, 'Oberon', 'Second largest moon of Uranus', true, 4500, 3.0, 10);
+INSERT INTO public.moon VALUES (51, 'Enceladus', 'Moon of Saturn with water geysers', true, 4000, 1.0, 11);
+INSERT INTO public.moon VALUES (52, 'Rhea', 'Moon of Saturn', true, 4500, 2.0, 12);
+INSERT INTO public.moon VALUES (53, 'Mimas', 'Moon of Saturn with a large impact crater', true, 4500, 1.4, 13);
+INSERT INTO public.moon VALUES (54, 'Triton', 'Moon of Neptune with retrograde orbit', true, 4500, 4.3, 14);
+INSERT INTO public.moon VALUES (55, 'Charon', 'Largest moon of Pluto', true, 4600, 5.9, 1);
+INSERT INTO public.moon VALUES (56, 'Miranda', 'Moon of Uranus with varied terrain', true, 4500, 3.1, 2);
+INSERT INTO public.moon VALUES (57, 'Ganymede-II', 'Another large moon of Jupiter', true, 4600, 1.3, 3);
+INSERT INTO public.moon VALUES (58, 'Iapetus', 'Moon of Saturn with a unique appearance', true, 4500, 3.0, 4);
+INSERT INTO public.moon VALUES (59, 'Triton-II', 'A similar moon to Neptune’s Triton', true, 4500, 4.5, 5);
+INSERT INTO public.moon VALUES (60, 'Umbriel', 'Dark moon of Uranus', true, 4500, 2.7, 6);
 
 
 --
@@ -298,12 +313,17 @@ INSERT INTO public.planet VALUES (11, 'Neptune', 'Cold, gas giant', false, true,
 INSERT INTO public.planet VALUES (12, 'Uranus', 'Tilted gas giant', false, true, 4600, 290.0, 'Gas Giant', 1);
 INSERT INTO public.planet VALUES (13, 'Proxima b', 'Exoplanet in habitable zone', true, true, 1000, 42.0, 'Exoplanet', 4);
 INSERT INTO public.planet VALUES (14, 'Alpha Centauri d', 'Exoplanet in distant system', true, true, 900, 41.0, 'Exoplanet', 5);
+INSERT INTO public.planet VALUES (1, 'Earth', 'Sort', true, true, 45, 456.7, 'New', 3);
+INSERT INTO public.planet VALUES (2, 'Uranusss', 'Sorting', true, true, 45, 456.7, 'New', 4);
 
 
 --
 -- Data for Name: satellite; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.satellite VALUES (1, 'Sat 1', 'Scan', true, true);
+INSERT INTO public.satellite VALUES (2, 'Sat 2', 'Monitor', true, false);
+INSERT INTO public.satellite VALUES (3, 'Sat 3', 'Search', false, false);
 
 
 --
@@ -333,6 +353,13 @@ SELECT pg_catalog.setval('public.moon_moon_id_seq', 75, true);
 
 
 --
+-- Name: moon_moon_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+--
+
+SELECT pg_catalog.setval('public.moon_moon_id_seq1', 60, true);
+
+
+--
 -- Name: planet_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
@@ -344,14 +371,6 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 14, true);
 --
 
 SELECT pg_catalog.setval('public.star_star_id_seq', 6, true);
-
-
---
--- Name: moon desc_unique; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.moon
-    ADD CONSTRAINT desc_unique UNIQUE (description);
 
 
 --
@@ -371,11 +390,59 @@ ALTER TABLE ONLY public.moon
 
 
 --
+-- Name: galaxy name_unique; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT name_unique UNIQUE (name);
+
+
+--
+-- Name: star name_unique1; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT name_unique1 UNIQUE (name);
+
+
+--
+-- Name: moon name_unique2; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT name_unique2 UNIQUE (name);
+
+
+--
+-- Name: galaxy name_unique4; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT name_unique4 UNIQUE (name);
+
+
+--
+-- Name: planet name_unique5; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT name_unique5 UNIQUE (description);
+
+
+--
 -- Name: planet planet_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.planet
     ADD CONSTRAINT planet_pkey PRIMARY KEY (planet_id);
+
+
+--
+-- Name: satellite purpose_unique; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.satellite
+    ADD CONSTRAINT purpose_unique UNIQUE (name);
 
 
 --
@@ -400,6 +467,14 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.star
     ADD CONSTRAINT star_pkey PRIMARY KEY (star_id);
+
+
+--
+-- Name: moon moon_planet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT moon_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
 
 
 --
